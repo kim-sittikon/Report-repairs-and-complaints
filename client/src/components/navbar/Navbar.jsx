@@ -1,61 +1,67 @@
-import { Menu } from "lucide-react" 
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet" // ต้องผ่านข้อ 1 ก่อนถึงจะบรรทัดนี้จะไม่แดง
-import { Button } from "@/components/ui/button"
-import Colornav from "./Colornav"
-import Dropdown from "./Dropdown"
-import ListForm from "./ListForm"
-import Listhome from "./Listhome"
-import Logo from "./Logo"
-import Namenav from "./Namenav"
-import UserDropdown from "./UserDropdown" 
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+import Dropdown from "./Dropdown";
+import ListForm from "./ListForm";
+import Listhome from "./Listhome";
+import Logo from "./Logo";
+import Namenav from "./Namenav";
+import UserDropdown from "./UserDropdown";
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Colornav>
-      {/* 1. ส่วนซ้าย: โลโก้ + ชื่อระบบ */}
-      <div className="flex items-center gap-2 md:gap-3">
-        <Logo />
-        <Namenav />
-      </div>
-
-      {/* 2. ส่วนขวา (Desktop): จอใหญ่แสดงเมนูครบ */}
-      <div className="hidden md:flex items-center gap-4 text-sm">
-        <Listhome />
-        <ListForm />
-        <Dropdown />
-        <UserDropdown />
-      </div>
-
-      {/* 3. ส่วนขวา (Mobile): จอเล็กแสดงแค่ User กับ ปุ่มเมนู */}
-      <div className="flex md:hidden items-center gap-2">
+    <nav className="w-full bg-[#F59E0B] shadow-md relative z-50">
+      
+      {/* --- แก้ตรงนี้ครับ --- 
+          1. ลบ container mx-auto ออก (เพื่อให้เลิกจัดกึ่งกลาง)
+          2. ใส่ w-full (ให้กว้างเต็มจอ)
+          3. ปรับ px-4 (มือถือ) และ md:px-10 (จอคอม) <-- ปรับเลขตรงนี้ถ้าอยากให้ขยับซ้าย/ขวา
+      */}
+      <div className="w-full px-4 md:px-10 py-3"> 
         
-        {/* User Profile บนมือถือ (ไว้นอกเมนูเพื่อให้กดง่าย) */}
-        <UserDropdown /> 
-
-        {/* ปุ่ม Hamburger (ต้องลง Sheet ก่อนนะ) */}
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
-              <Menu className="h-6 w-6" />
-            </Button>
-          </SheetTrigger>
+        <div className="flex items-center justify-between">
           
-          <SheetContent side="right" className="w-[250px] bg-white text-black pt-10 border-l-[#F59E0B]">
-            <div className="flex flex-col gap-6">
-              <span className="font-bold text-lg text-[#F59E0B] border-b pb-2">เมนูหลัก</span>
-              
-              <div className="flex flex-col items-start gap-4 [&_a]:text-black [&_a]:text-lg">
-                <Listhome />
-                <ListForm />
-                {/* เมนูอื่นๆ ถ้าจะใส่เพิ่ม */}
-              </div>
+          {/* ฝั่งซ้าย */}
+          <div className="flex items-center gap-2 sm:gap-4">
+               <Logo />
+               <Namenav />
+          </div>
+
+          {/* ฝั่งขวา (Desktop) */}
+          <div className="hidden md:flex items-center gap-6">
+            <Listhome />
+            <ListForm />
+            <Dropdown />
+            <UserDropdown />
+          </div>
+
+          {/* ฝั่งขวา (Mobile) */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-white focus:outline-none p-2"
+            >
+              {isOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {isOpen && (
+          <div className="md:hidden flex flex-col items-center gap-4 py-4 mt-2 border-t border-white/20 animate-in slide-in-from-top-2 duration-300">
+            <Listhome />
+            <ListForm />
+            <Dropdown />
+            <div className="pt-2 border-t border-white/20 w-full flex justify-center">
+                <UserDropdown />
             </div>
-          </SheetContent>
-        </Sheet>
+          </div>
+        )}
+
       </div>
+    </nav>
+  );
+};
 
-    </Colornav>
-  )
-}
-
-export default Navbar
+export default Navbar;
