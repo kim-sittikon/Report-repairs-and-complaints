@@ -1,4 +1,4 @@
-const Colornav = ({ children }) => {
+const Colornav = ({ children }) => { 
   return (
     <header className="w-full bg-[#F59E0B]">
       <div 

@@ -2,7 +2,7 @@ import { Outlet } from "react-router"
 
 const LayoutReport = () => {
   return (
-    <div>LayoutReport</div>
+    <h1>test</h1>
   )
 }
 export default LayoutReport
