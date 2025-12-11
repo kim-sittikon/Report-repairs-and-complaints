@@ -1,19 +1,22 @@
 // import Navbar from "@/components/navbaradmin/Navbar"
 import { Outlet } from "react-router"
 import Navbar from "@/components/navbar/navbar"
+import Footer from "@/components/Footer"
 
 const LayoutAdmin = () => {
   return (
-    <> 
-      {/* 1. เอา Navbar มาไว้ข้างบนสุด (นอก main) มันถึงจะกว้างเต็มจอได้ */}
-      <Navbar /> 
-      
-      {/* 2. ส่วนเนื้อหา (Outlet) ให้เก็บไว้ใน container เหมือนเดิม เนื้อหาจะได้อยู่ตรงกลางสวยๆ */}
-      <main className="container">
+    <div className="flex flex-col min-h-screen">
+      {/* 1. เอา Navbar มาไว้ข้างบนสุด */}
+      <Navbar />
+
+      {/* 2. ส่วนเนื้อหา (Outlet) ให้ขยายเต็มพื้นที่ที่เหลือ */}
+      <main className="container flex-grow py-4">
         <Outlet />
       </main>
 
-    </>
+      {/* 3. Footer อยู่ล่างสุด */}
+      <Footer />
+    </div>
   )
 }
 export default LayoutAdmin

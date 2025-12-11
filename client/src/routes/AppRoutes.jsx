@@ -1,7 +1,7 @@
 import Layout from "@/layouts/Layout";
 import LayoutAdmin from "@/layouts/LayoutAdmin";
 import About from "@/pages/About";
-import Camping from "@/pages/admin/camping";
+import CreateNews from "@/pages/admin/CreateNews";
 import Dashboard from "@/pages/admin/Dashboard";
 import Manage from "@/pages/admin/Manage";
 import Home from "@/pages/home";
@@ -12,31 +12,31 @@ import { BrowserRouter, createBrowserRouter, Outlet, Route, Routes } from "react
 const AppRoutes = () => {
   return (
     <>
-     <BrowserRouter>
-      <Routes>
-        
-        {/* Public Content */}
-        <Route element ={<Layout />}>
+      <BrowserRouter>
+        <Routes>
+
+          {/* Public Content */}
+          <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="about" element={<About />} />
-        </Route>
+          </Route>
 
 
-        {/* Private Contest */}
-        <Route path="admin" element={<LayoutAdmin />}>
-           <Route index element={<Dashboard />} />
-           <Route path="manage" element={<Manage />} />
-           <Route path="camping" element={<Camping />} /> 
-        </Route>
+          {/* Private Contest */}
+          <Route path="admin" element={<LayoutAdmin />}>
+            <Route index element={<Dashboard />} />
+            <Route path="manage" element={<Manage />} />
+            <Route path="create-news" element={<CreateNews />} />
+          </Route>
 
 
-        {/* Fail Path */}
-        <Route path="*" element={<Notfound />} />
+          {/* Fail Path */}
+          <Route path="*" element={<Notfound />} />
 
-      </Routes>
-     </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
     </>
- );
+  );
 }
 
 
