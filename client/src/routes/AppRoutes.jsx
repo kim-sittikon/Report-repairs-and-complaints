@@ -1,6 +1,7 @@
 import Layout from "@/layouts/Layout";
 import LayoutAdmin from "@/layouts/LayoutAdmin";
 import About from "@/pages/About";
+import Camping from "@/pages/admin/camping";
 import Dashboard from "@/pages/admin/Dashboard";
 import Manage from "@/pages/admin/Manage";
 import Home from "@/pages/home";
@@ -25,6 +26,7 @@ const AppRoutes = () => {
         <Route path="admin" element={<LayoutAdmin />}>
            <Route index element={<Dashboard />} />
            <Route path="manage" element={<Manage />} />
+           <Route path="camping" element={<Camping />} /> 
         </Route>
 
 
