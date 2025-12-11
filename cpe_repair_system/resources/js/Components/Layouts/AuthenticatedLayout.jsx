@@ -16,7 +16,7 @@ export default function Authenticated({ user, header, children }) {
             )}
 
             {/* Page Content */}
-            <main className="pt-[80px]">
+            <main>
                 {children}
             </main>
 

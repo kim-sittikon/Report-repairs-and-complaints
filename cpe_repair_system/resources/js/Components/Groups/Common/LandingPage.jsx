@@ -37,7 +37,7 @@ export default function LandingPage() {
 
                         <div className="flex flex-col sm:flex-row gap-10 pt-4">
                             <Link
-                                href="/report/create"
+                                href={route('report.create')}
                                 className="min-w-[160px] px-8 py-3 bg-[#F59E0B] hover:bg-[#d97706] text-black font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-lg text-center"
                             >
                                 แจ้งปัญหา
