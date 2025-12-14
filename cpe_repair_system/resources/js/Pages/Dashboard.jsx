@@ -1,23 +1,19 @@
-import AuthenticatedLayout from '@/Components/Layouts/AuthenticatedLayout';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage } from '@inertiajs/react';
-import AdminDashboard from '@/Components/Dashboards/AdminDashboard';
-import RepairDashboard from '@/Components/Dashboards/RepairDashboard';
-import ComplaintDashboard from '@/Components/Dashboards/ComplaintDashboard';
-import UserHistory from '@/Components/Dashboards/UserHistory';
-import LandingPage from '@/Components/Groups/Common/LandingPage';
+import AdminDashboard from '@/Components/Groups/Admin/AdminDashboardContent';
+import RepairDashboard from '@/Components/Groups/Repair/RepairDashboardContent';
+import ComplaintDashboard from '@/Components/Groups/Complaint/ComplaintDashboardContent';
+import LandingPage from '@/Components/Groups/LandingPage';
 
 // Determine which view to show based on query param and strict permission
 const DashboardContent = ({ view, user, urgentNews, generalNews }) => {
-    // Security Checks: Fallback to History if no permission
+    // Security Checks
     if (view === 'admin' && user.job_admin) return <AdminDashboard />;
     if (view === 'repair' && user.job_repair) return <RepairDashboard />;
     if (view === 'complaint' && user.job_complaint) return <ComplaintDashboard />;
 
-    // Explicit History View
-    if (view === 'history') return <UserHistory urgentNews={urgentNews} generalNews={generalNews} />;
-
-    // Fallback?
-    return <UserHistory urgentNews={urgentNews} generalNews={generalNews} />;
+    // Default fallback to LandingPage if view is invalid or permission denied
+    return null;
 };
 
 export default function Dashboard() {

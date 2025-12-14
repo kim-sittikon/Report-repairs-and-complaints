@@ -43,7 +43,7 @@ export default function LandingPage() {
                                 แจ้งปัญหา
                             </Link>
                             <Link
-                                href="/dashboard?view=history"
+                                href={route('report.history')}
                                 className="min-w-[160px] px-8 py-3 bg-transparent text-[#F59E0B] border border-[#F59E0B] font-medium rounded-lg hover:bg-[#F59E0B]/10 transition-all duration-300 text-lg shadow-md hover:shadow-lg text-center"
                             >
                                 ติดตามสถานะ

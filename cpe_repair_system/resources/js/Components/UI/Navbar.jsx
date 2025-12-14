@@ -1,12 +1,22 @@
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
-import Dropdown from '@/Components/Dropdown';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
+import Dropdown from '@/Components/UI/Dropdown';
+import ResponsiveNavLink from '@/Components/UI/ResponsiveNavLink';
 
 export default function Navbar() {
+    // ALL HOOKS MUST BE AT THE TOP (React Rules of Hooks)
     const { auth } = usePage().props;
-    const user = auth.user;
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+
+    // NOW we can safely check for user
+    const user = auth?.user;
+    if (!user) return null;
+
+    // Safe Name Handling
+    const fullNameParts = (user.name || '').split(' ');
+    const firstName = fullNameParts[0] || 'User';
+    const lastName = fullNameParts.slice(1).join(' ') || '';
+    const userRole = user.role || 'User';
 
     // Helper for Dropdown Trigger Button (Orange Theme)
     const NavDropdownTrigger = ({ label }) => (
@@ -41,20 +51,20 @@ export default function Navbar() {
 
     return (
         <nav className="bg-[#F59E0B] shadow-lg border-b border-orange-600 fixed w-full top-0 z-50 font-sans">
-            <div className="w-full px-8 lg:px-14"> {/* Increased side padding */}
-                <div className="flex justify-between h-[76px] items-center"> {/* Increased height slightly */}
+            <div className="w-full px-4 lg:px-8">
+                <div className="flex justify-between h-16 lg:h-20 items-center">
 
                     {/* Left Side: Logo & System Name */}
-                    <div className="flex items-center gap-6 ml-28">
-                        <Link href="/dashboard" className="flex items-center gap-4 hover:opacity-90 transition-opacity">
+                    <div className="flex items-center gap-4 lg:gap-6">
+                        <Link href="/dashboard" className="flex items-center gap-3 lg:gap-4 hover:opacity-90 transition-opacity">
                             <div className="shrink-0 flex items-center bg-white/10 p-2 rounded-full shadow-sm">
-                                <img src="/images/rmutt-logo.png" alt="RMUTT" className="h-11 w-auto drop-shadow-sm" />
+                                <img src="/images/rmutt-logo.png" alt="RMUTT" className="h-8 lg:h-11 w-auto drop-shadow-sm" />
                             </div>
                             <div className="flex flex-col justify-center">
-                                <span className="text-white font-semibold text-xl leading-none tracking-wide drop-shadow-sm mb-1">
+                                <span className="text-white font-semibold text-base lg:text-xl leading-none tracking-wide drop-shadow-sm mb-0.5 lg:mb-1">
                                     ระบบรับเรื่องแจ้งปัญหา
                                 </span>
-                                <span className="text-orange-50 text-sm font-light tracking-wider opacity-95">
+                                <span className="hidden lg:block text-orange-50 text-xs lg:text-sm font-light tracking-wider opacity-95">
                                     ภาควิศวกรรมคอมพิวเตอร์ (Computer Engineering Issue Reporting System)
                                 </span>
                             </div>
@@ -62,7 +72,7 @@ export default function Navbar() {
                     </div>
 
                     {/* Right Side: Desktop Menu & Profile */}
-                    <div className="hidden lg:flex items-center gap-10 mr-24"> {/* Increased Gap */}
+                    <div className="hidden lg:flex items-center gap-8 ml-auto">
 
                         {/* 1. Universal Dropdown: แจ้งปัญหา */}
                         <div className="relative group">
@@ -73,8 +83,8 @@ export default function Navbar() {
                                 <Dropdown.Content width="56">
                                     <DropdownHeader>เมนูทั่วไป (General)</DropdownHeader>
                                     <Dropdown.Link href="/dashboard">หน้าแรก (Home)</Dropdown.Link>
-                                    <Dropdown.Link href={route('report.index')}>ฟอร์มแจ้งปัญหา (Report Issue)</Dropdown.Link>
-                                    <Dropdown.Link href="/dashboard?view=history">ประวัติการแจ้ง (My History)</Dropdown.Link>
+                                    <Dropdown.Link href={route('report.create')}>ฟอร์มแจ้งปัญหา (Report Issue)</Dropdown.Link>
+                                    <Dropdown.Link href={route('report.history')}>ประวัติการแจ้ง (My History)</Dropdown.Link>
                                 </Dropdown.Content>
                             </Dropdown>
                         </div>
@@ -132,15 +142,15 @@ export default function Navbar() {
                                         <Dropdown.Link href="/admin/users">จัดการผู้ใช้งาน (Manage Users)</Dropdown.Link>
                                         <Dropdown.Link href="/admin/users/create">สร้างผู้ใช้งาน (Create User)</Dropdown.Link>
                                         <div className="border-t border-gray-100 my-1"></div>
-                                        <Dropdown.Link href="/admin/buildings/create">เพิ่มอาคาร (Add Building)</Dropdown.Link>
-                                        <Dropdown.Link href="/admin/rooms/create">เพิ่มห้อง (Add Room)</Dropdown.Link>
+                                        <Dropdown.Link href="/admin/locations">เพิ่มอาคาร/ห้อง (Manage Locations)</Dropdown.Link>
+                                        <Dropdown.Link href="/admin/keywords">จัดการคีย์เวิร์ด (Manage Keywords)</Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>
                         )}
 
                         {/* User Profile Dropdown (Separated by Divider) */}
-                        <div className="h-10 w-px bg-orange-400/60 mx-4"></div> {/* Wider Divider */}
+                        <div className="h-10 w-px bg-orange-400/60"></div>
 
                         <div className="relative">
                             <Dropdown>
@@ -151,11 +161,11 @@ export default function Navbar() {
                                             className="inline-flex items-center gap-3 border border-transparent text-sm leading-4 font-medium rounded-full text-white hover:bg-white/10 focus:outline-none transition ease-in-out duration-150 py-1.5 pl-1.5 pr-4"
                                         >
                                             <div className="h-10 w-10 rounded-full bg-white text-[#F59E0B] flex items-center justify-center font-bold text-xl shadow-md ring-2 ring-white/20">
-                                                {user.first_name[0]}
+                                                {firstName[0]}
                                             </div>
                                             <div className="flex flex-col items-start text-left">
-                                                <span className="font-semibold text-[15px] leading-tight">{user.first_name}</span>
-                                                <span className="text-[11px] opacity-90 uppercase tracking-wider font-light">{user.role}</span>
+                                                <span className="font-semibold text-[15px] leading-tight">{firstName}</span>
+                                                <span className="text-[11px] opacity-90 uppercase tracking-wider font-light">{userRole}</span>
                                             </div>
                                             <svg
                                                 className="ml-1 h-4 w-4 opacity-70"
@@ -196,7 +206,7 @@ export default function Navbar() {
                     </div>
 
                     {/* Mobile Hamburger (Visible on < lg) */}
-                    <div className="-mr-2 flex items-center lg:hidden">
+                    <div className="flex items-center lg:hidden ml-auto">
                         <button
                             onClick={() => setShowingNavigationDropdown((previousState) => !previousState)}
                             className="inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-white/10 focus:outline-none transition duration-150 ease-in-out"
@@ -227,7 +237,7 @@ export default function Navbar() {
                 <div className="pt-2 pb-3 space-y-1">
                     <div className="px-4 py-2 text-xs font-bold text-orange-200 uppercase tracking-widest">General Menu</div>
                     <ResponsiveNavLink href="/dashboard" className="text-white hover:bg-black/10 text-lg">หน้าแรก</ResponsiveNavLink>
-                    <ResponsiveNavLink href={route('report.index')} className="text-white hover:bg-black/10 text-lg">ฟอร์มแจ้งปัญหา</ResponsiveNavLink>
+                    <ResponsiveNavLink href={route('report.create')} className="text-white hover:bg-black/10 text-lg">ฟอร์มแจ้งปัญหา</ResponsiveNavLink>
 
                     {user.job_repair && (
                         <>
@@ -253,11 +263,11 @@ export default function Navbar() {
                 <div className="pt-6 pb-6 border-t border-orange-600 bg-orange-700/30">
                     <div className="px-6 flex items-center gap-4">
                         <div className="h-12 w-12 rounded-full bg-white text-[#F59E0B] flex items-center justify-center font-bold text-xl shadow-md">
-                            {user.first_name[0]}
+                            {firstName[0]}
                         </div>
                         <div>
                             <div className="font-semibold text-lg text-white">
-                                {user.first_name} {user.last_name}
+                                {firstName} {lastName}
                             </div>
                             <div className="font-light text-sm text-orange-200">{user.email}</div>
                         </div>

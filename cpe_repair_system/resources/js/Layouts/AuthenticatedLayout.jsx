@@ -1,10 +1,10 @@
-import Navbar from '@/Components/Common/Navbar';
+import Navbar from '@/Components/UI/Navbar';
 
 export default function Authenticated({ user, header, children }) {
     return (
         <div className="min-h-screen bg-gray-100">
-            {/* Super Navbar (Replaces Sidebar) */}
-            <Navbar />
+            {/* Navbar Only (No Sidebar) */}
+            <Navbar user={user} />
 
             {/* Page Heading */}
             {header && (
@@ -15,8 +15,8 @@ export default function Authenticated({ user, header, children }) {
                 </header>
             )}
 
-            {/* Page Content */}
-            <main>
+            {/* Page Content (Push down for fixed navbar) */}
+            <main className="flex-1 pt-16 lg:pt-20">
                 {children}
             </main>
 

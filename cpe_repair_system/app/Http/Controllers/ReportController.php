@@ -16,7 +16,11 @@ class ReportController extends Controller
 
     public function create()
     {
-        return Inertia::render('Groups/Report/Create');
+        // Fetch locations for dropdown
+        $buildings = \App\Models\Building::with('rooms')->get();
+        return Inertia::render('Report/Create', [
+            'buildings' => $buildings
+        ]);
     }
 
     public function store(Request $request)
@@ -25,23 +29,27 @@ class ReportController extends Controller
             'type' => 'required|in:repair,complaint',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'location_id' => 'required|exists:building,building_id',
-            'room' => 'required|string|max:255',
+            'location_id' => 'nullable|exists:building,building_id',
+            'room' => 'nullable|string|max:255',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         $user = auth()->user();
+        $room_id = null;
 
-        // 1. Resolve Room (Find or Create)
-        $room = \App\Models\Room::firstOrCreate(
-            [
-                'room_name' => $request->room,
-                'building_id' => $request->location_id
-            ],
-            [
-                'account_id' => $user->account_id
-            ]
-        );
+        // 1. Resolve Room (Only if repair and location is provided)
+        if ($request->type === 'repair' && $request->location_id) {
+            $room = \App\Models\Room::firstOrCreate(
+                [
+                    'room_name' => $request->room ?? '-',
+                    'building_id' => $request->location_id
+                ],
+                [
+                    'account_id' => $user->account_id
+                ]
+            );
+            $room_id = $room->room_id;
+        }
 
         $requestModel = null;
         $message = '';
@@ -55,7 +63,7 @@ class ReportController extends Controller
                 'priority' => 1,
                 'account_id' => $user->account_id,
                 'building_id' => $request->location_id,
-                'room_id' => $room->room_id,
+                'room_id' => $room_id,
             ]);
             $message = 'Repair request submitted successfully.';
         } else {
@@ -65,8 +73,7 @@ class ReportController extends Controller
                 'status' => 'pending',
                 'priority' => 1,
                 'account_id' => $user->account_id,
-                'building_id' => $request->location_id,
-                'room_id' => $room->room_id,
+                // Complaints might not have specific building/room, or optional
             ]);
             $message = 'Complaint submitted successfully.';
         }
@@ -95,5 +102,36 @@ class ReportController extends Controller
         }
 
         return redirect()->route('dashboard')->with('success', $message);
+    }
+
+    public function history(Request $request)
+    {
+        $user = auth()->user();
+
+        // Fetch Repairs
+        $repairs = \App\Models\RequestRepair::where('account_id', $user->account_id)
+            ->with(['building', 'room'])
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($item) {
+                $item->type = 'repair';
+                return $item;
+            });
+
+        // Fetch Complaints
+        $complaints = \App\Models\RequestComplaint::where('account_id', $user->account_id)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($item) {
+                $item->type = 'complaint';
+                return $item;
+            });
+
+        // Merge and Sort
+        $history = $repairs->concat($complaints)->sortByDesc('created_at')->values();
+
+        return Inertia::render('Report/History', [
+            'history' => $history
+        ]);
     }
 }

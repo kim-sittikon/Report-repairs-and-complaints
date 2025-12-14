@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useForm, usePage } from '@inertiajs/react';
-import AuthenticatedLayout from '@/Components/Layouts/AuthenticatedLayout';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Camera, MapPin, AlertCircle, FileText, Send } from 'lucide-react';
 
-export default function Create() {
-    const { auth } = usePage().props;
+export default function Create({ auth, buildings = [] }) {
+    // The original code had `const { auth } = usePage().props;` here.
+    // Assuming 'auth' is now passed as a prop based on the instruction's function signature.
     const { data, setData, post, processing, errors } = useForm({
         type: 'repair', // 'repair' (อาคารสถานที่) or 'complaint' (การเรียนการสอน)
         title: '',
@@ -87,37 +88,40 @@ export default function Create() {
                             </div>
                         </div>
 
-                        {/* Location */}
-                        <div className="space-y-4">
-                            <label className="text-xl font-medium text-gray-800">สถานที่</label>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pl-0 md:pl-0">
-                                <div className="space-y-2">
-                                    <select
-                                        value={data.location_id}
-                                        onChange={e => setData('location_id', e.target.value)}
-                                        className="w-full rounded-md border-gray-300 shadow-sm focus:border-[#F59E0B] focus:ring-[#F59E0B] py-2.5 text-gray-600"
-                                    >
-                                        <option value="">อาคาร CPE1 ชั้น 1 (Building)</option>
-                                        <option value="4">ตึก 4 (Building 4)</option>
-                                        <option value="5">ตึก 5 (Building 5)</option>
-                                        <option value="6">ตึก 6 (Building 6)</option>
-                                    </select>
-                                    {errors.location_id && <div className="text-red-500 text-sm mt-1">{errors.location_id}</div>}
-                                </div>
-                                <div className="space-y-2">
-                                    <input // Changed from select to input map to design request, or kept select if strict? Design shows Dropdown for room too.
-                                        // User Design shows Dropdown for Room "ห้อง 1601". I'll stick to input for flexiblity or Stub dropdown.
-                                        // Let's use Input as per my previous code, or minimal select.
-                                        type="text"
-                                        value={data.room}
-                                        onChange={e => setData('room', e.target.value)}
-                                        className="w-full rounded-md border-gray-300 shadow-sm focus:border-[#F59E0B] focus:ring-[#F59E0B] py-2.5"
-                                        placeholder="ห้อง 16101"
-                                    />
-                                    {errors.room && <div className="text-red-500 text-sm mt-1">{errors.room}</div>}
+
+                        {/* Location - Only show for Repair */}
+                        {data.type === 'repair' && (
+                            <div className="space-y-4 transition-all duration-300 ease-in-out">
+                                <label className="text-xl font-medium text-gray-800">สถานที่</label>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pl-0 md:pl-0">
+                                    <div className="space-y-2">
+                                        <select
+                                            value={data.location_id}
+                                            onChange={e => setData('location_id', e.target.value)}
+                                            className="w-full rounded-md border-gray-300 shadow-sm focus:border-[#F59E0B] focus:ring-[#F59E0B] py-2.5 text-gray-600"
+                                        >
+                                            <option value="">เลือกอาคาร (Select Building)</option>
+                                            {buildings.map(building => (
+                                                <option key={building.building_id} value={building.building_id}>
+                                                    {building.building_name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {errors.location_id && <div className="text-red-500 text-sm mt-1">{errors.location_id}</div>}
+                                    </div>
+                                    <div className="space-y-2">
+                                        <input
+                                            type="text"
+                                            value={data.room}
+                                            onChange={e => setData('room', e.target.value)}
+                                            className="w-full rounded-md border-gray-300 shadow-sm focus:border-[#F59E0B] focus:ring-[#F59E0B] py-2.5"
+                                            placeholder="ระบุห้อง / สถานที่ย่อย (Specify Room)"
+                                        />
+                                        {errors.room && <div className="text-red-500 text-sm mt-1">{errors.room}</div>}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        )}
 
                         {/* Title */}
                         <div className="space-y-2">

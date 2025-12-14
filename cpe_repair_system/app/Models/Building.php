@@ -2,22 +2,26 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Building extends Model
 {
-    protected $table = 'building';
-    protected $primaryKey = 'building_id';
-    protected $fillable = ['building_name', 'account_id'];
+    use HasFactory;
 
+    protected $table = 'building'; // Singular table name
+    protected $primaryKey = 'building_id';
+
+    protected $fillable = [
+        'building_name',
+        'account_id',
+    ];
+
+    /**
+     * Relationship: A building has many rooms
+     */
     public function rooms()
     {
-        return $this->hasMany(Room::class, 'building_id');
+        return $this->hasMany(Room::class, 'building_id', 'building_id');
     }
-
-    public function requestsRepair()
-    {
-        return $this->hasMany(RequestRepair::class, 'building_id');
-    }
-
 }
