@@ -23,9 +23,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('Job/Index'); // Stub
     })->name('job.index');
 
-    Route::get('/admin', function () {
-        return Inertia::render('Admin/Index'); // Stub
-    })->name('admin.index');
+    Route::get('/admin', [App\Http\Controllers\AdminDashboardController::class, 'index'])->name('admin.index');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

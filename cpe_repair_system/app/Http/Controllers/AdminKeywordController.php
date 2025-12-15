@@ -13,7 +13,11 @@ class AdminKeywordController extends Controller
      */
     public function index()
     {
-        $keywords = Keyword::orderBy('type')->orderBy('keyword')->get();
+        // ใช้ Eager Loading (with) เพื่อดึงชื่อคนสร้าง/แก้ไข มาแสดงผลในตารางได้เลย ไม่ต้อง Query ซ้ำ
+        $keywords = Keyword::with(['creator', 'editor'])
+            ->orderBy('type')
+            ->orderBy('keyword')
+            ->get();
 
         return Inertia::render('Admin/ManageKeywords', [
             'keywords' => $keywords,
@@ -38,6 +42,9 @@ class AdminKeywordController extends Controller
         if ($exists) {
             return back()->withErrors(['keyword' => 'คีย์เวิร์ดนี้มีอยู่แล้วในประเภทที่เลือก']);
         }
+
+        // Add creator_id
+        $validated['creator_id'] = auth()->user()->account_id;
 
         Keyword::create($validated);
 
@@ -66,6 +73,9 @@ class AdminKeywordController extends Controller
             return back()->withErrors(['keyword' => 'คีย์เวิร์ดนี้มีอยู่แล้วในประเภทที่เลือก']);
         }
 
+        // Add editor_id
+        $validated['editor_id'] = auth()->user()->account_id;
+
         $keyword->update($validated);
 
         return back()->with('success', 'แก้ไขคีย์เวิร์ดสำเร็จ');
@@ -77,6 +87,12 @@ class AdminKeywordController extends Controller
     public function destroy($id)
     {
         $keyword = Keyword::findOrFail($id);
+
+        // Track who deleted
+        $keyword->deleter_id = auth()->user()->account_id;
+        $keyword->save();
+
+        // Soft delete
         $keyword->delete();
 
         return back()->with('success', 'ลบคีย์เวิร์ดสำเร็จ');

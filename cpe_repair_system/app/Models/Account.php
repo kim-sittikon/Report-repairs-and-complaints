@@ -70,6 +70,17 @@ class Account extends Authenticatable
         ];
     }
 
+    /**
+     * Accessor for name (combines first_name and last_name)
+     */
+    public function getNameAttribute()
+    {
+        if ($this->first_name && $this->last_name) {
+            return $this->first_name . ' ' . $this->last_name;
+        }
+        return $this->first_name ?: $this->last_name ?: $this->email;
+    }
+
     // Relationships
 
     public function jobs()

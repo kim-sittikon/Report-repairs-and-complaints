@@ -6,9 +6,9 @@ import ComplaintDashboard from '@/Components/Groups/Complaint/ComplaintDashboard
 import LandingPage from '@/Components/Groups/LandingPage';
 
 // Determine which view to show based on query param and strict permission
-const DashboardContent = ({ view, user, urgentNews, generalNews }) => {
+const DashboardContent = ({ view, user, urgentNews, generalNews, adminStats, recentActivity }) => {
     // Security Checks
-    if (view === 'admin' && user.job_admin) return <AdminDashboard />;
+    if (view === 'admin' && user.job_admin) return <AdminDashboard stats={adminStats} recentActivity={recentActivity} />;
     if (view === 'repair' && user.job_repair) return <RepairDashboard />;
     if (view === 'complaint' && user.job_complaint) return <ComplaintDashboard />;
 
@@ -17,7 +17,7 @@ const DashboardContent = ({ view, user, urgentNews, generalNews }) => {
 };
 
 export default function Dashboard() {
-    const { auth, urgent_news, general_news } = usePage().props;
+    const { auth, urgent_news, general_news, adminStats, recentActivity } = usePage().props;
     const user = auth.user;
 
     // Get URL query params
@@ -37,7 +37,14 @@ export default function Dashboard() {
                 ) : (
                     <div className="py-2">
                         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                            <DashboardContent view={view} user={user} urgentNews={urgent_news} generalNews={general_news} />
+                            <DashboardContent
+                                view={view}
+                                user={user}
+                                urgentNews={urgent_news}
+                                generalNews={general_news}
+                                adminStats={adminStats}
+                                recentActivity={recentActivity}
+                            />
                         </div>
                     </div>
                 )}

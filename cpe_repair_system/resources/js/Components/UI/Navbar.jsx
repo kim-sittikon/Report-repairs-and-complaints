@@ -137,7 +137,7 @@ export default function Navbar() {
                                     </Dropdown.Trigger>
                                     <Dropdown.Content width="56">
                                         <DropdownHeader>ผู้ดูแลระบบ (Admin Menu)</DropdownHeader>
-                                        <Dropdown.Link href="/dashboard?view=admin">หน้าหลัก (Dashboard)</Dropdown.Link>
+                                        <Dropdown.Link href="/admin">หน้าหลัก (Dashboard)</Dropdown.Link>
                                         <div className="border-t border-gray-100 my-1"></div>
                                         <Dropdown.Link href="/admin/users">จัดการผู้ใช้งาน (Manage Users)</Dropdown.Link>
                                         <Dropdown.Link href="/admin/users/create">สร้างผู้ใช้งาน (Create User)</Dropdown.Link>
