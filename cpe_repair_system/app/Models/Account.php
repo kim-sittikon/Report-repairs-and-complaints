@@ -30,6 +30,9 @@ class Account extends Authenticatable
         'job_repair',
         'job_admin',
         'job_complaint',
+        'invited_by',
+        'invitation_sent_at',
+        'invitation_expires_at',
     ];
 
     /**
@@ -67,6 +70,8 @@ class Account extends Authenticatable
             'job_admin' => 'boolean',
             'job_complaint' => 'boolean',
             'credit' => 'integer',
+            'invitation_sent_at' => 'datetime',
+            'invitation_expires_at' => 'datetime',
         ];
     }
 

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\InviteController;
+use App\Http\Controllers\AdminUserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -44,7 +46,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/keywords', [App\Http\Controllers\AdminKeywordController::class, 'store'])->name('keywords.store');
         Route::put('/keywords/{id}', [App\Http\Controllers\AdminKeywordController::class, 'update'])->name('keywords.update');
         Route::delete('/keywords/{id}', [App\Http\Controllers\AdminKeywordController::class, 'destroy'])->name('keywords.destroy');
+
+        // User Management
+        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+        Route::get('/users/invite', [AdminUserController::class, 'create'])->name('users.invite');
+        Route::post('/users/invite', [AdminUserController::class, 'invite'])->name('users.invite.send');
     });
+});
+
+// Guest Routes (Invitation Acceptance)
+Route::middleware('guest')->group(function () {
+    Route::get('/invite/{account}', [InviteController::class, 'show'])
+        ->middleware('signed')
+        ->name('invite.accept');
+    Route::post('/invite/{account}', [InviteController::class, 'store'])
+        ->name('invite.store');
 });
 
 require __DIR__ . '/auth.php';

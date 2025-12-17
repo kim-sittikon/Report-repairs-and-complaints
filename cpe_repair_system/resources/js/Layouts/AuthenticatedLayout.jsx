@@ -2,7 +2,7 @@ import Navbar from '@/Components/UI/Navbar';
 
 export default function Authenticated({ user, header, children }) {
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen flex flex-col bg-gray-100">
             {/* Navbar Only (No Sidebar) */}
             <Navbar user={user} />
 

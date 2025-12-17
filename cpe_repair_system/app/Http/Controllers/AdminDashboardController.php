@@ -6,7 +6,6 @@ use App\Models\Account;
 use App\Models\Building;
 use App\Models\Room;
 use App\Models\Keyword;
-use App\Models\UserActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -58,21 +57,13 @@ class AdminDashboardController extends Controller
             ],
         ];
 
-        // 4. User Activity Chart (Last 6 months)
+        // 4. User Activity Chart - Empty data (backend removed)
         $chartData_userActivity = [];
         for ($i = 5; $i >= 0; $i--) {
             $date = Carbon::now()->subMonths($i);
-
-            // Count unique users who logged in during this month
-            $uniqueUsers = UserActivityLog::whereYear('created_at', $date->year)
-                ->whereMonth('created_at', $date->month)
-                ->where('activity_type', 'login')
-                ->distinct('account_id')
-                ->count('account_id');
-
             $chartData_userActivity[] = [
                 'month' => $date->locale('th')->format('M'),
-                'users' => $uniqueUsers,
+                'users' => 0, // No data - backend removed
             ];
         }
 

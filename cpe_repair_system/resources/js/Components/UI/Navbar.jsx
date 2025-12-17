@@ -140,7 +140,7 @@ export default function Navbar() {
                                         <Dropdown.Link href="/admin">หน้าหลัก (Dashboard)</Dropdown.Link>
                                         <div className="border-t border-gray-100 my-1"></div>
                                         <Dropdown.Link href="/admin/users">จัดการผู้ใช้งาน (Manage Users)</Dropdown.Link>
-                                        <Dropdown.Link href="/admin/users/create">สร้างผู้ใช้งาน (Create User)</Dropdown.Link>
+                                        <Dropdown.Link href={route('admin.users.invite')}>สร้างผู้ใช้งาน (Create User)</Dropdown.Link>
                                         <div className="border-t border-gray-100 my-1"></div>
                                         <Dropdown.Link href="/admin/locations">เพิ่มอาคาร/ห้อง (Manage Locations)</Dropdown.Link>
                                         <Dropdown.Link href="/admin/keywords">จัดการคีย์เวิร์ด (Manage Keywords)</Dropdown.Link>
