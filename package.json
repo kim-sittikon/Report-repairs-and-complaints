@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     "$schema": "https://www.schemastore.org/package.json",
     "private": true,
     "type": "module",
@@ -35,4 +36,9 @@
         "recharts": "^3.5.1",
         "tailwind-merge": "^3.4.0"
     }
+=======
+  "dependencies": {
+    "recharts": "^3.5.1"
+  }
+>>>>>>> 8cc4bc5519f7bc43ccff26e1759f8360c36281df
 }
