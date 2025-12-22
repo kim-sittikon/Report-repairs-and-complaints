@@ -1,0 +1,135 @@
+export const mockReports = [
+    { 
+        id: 'CM9801', 
+        problem: 'ไฟรั่วที่ตู้กดน้ำ', 
+        reporter: 'นาย กิตติพงษ์ แสงชัย', 
+        priority: 'เร่งด่วน', 
+        status: 'receive', 
+        date: '15 ม.ค. 2025 16.11', 
+        credit: 3,
+        location: 'โรงอาหาร อาคาร 1',
+        details: 'มีกระแสไฟรั่วบริเวณตู้กดน้ำเย็น สังเกตเห็นประกายไฟเล็กน้อย อันตรายมาก',
+        images: ['img1', 'img2', 'img3', 'img4'] 
+    },
+    { 
+        id: 'CM9802', 
+        problem: 'เครื่องพิมพ์ไม่สามารถเชื่อมต่อเครือข่ายได้', 
+        reporter: 'นาย กิตติพงษ์ แสงชัย', 
+        priority: 'ปกติ', 
+        status: 'completed', 
+        date: '17 ม.ค. 2025 16.30', 
+        credit: 3,
+        location: 'ห้องพักครู ชั้น 2',
+        details: 'เครื่องพิมพ์ HP LaserJet ไม่สามารถเชื่อมต่อ WiFi ได้ พิมพ์งานไม่ออก',
+        images: ['png'] 
+    },
+    { 
+        id: 'CM9803', 
+        problem: 'ปัญหาเครือข่ายอินเทอร์เน็ตภายในห้องเรียน', 
+        reporter: 'นาย กิตติพงษ์ แสงชัย', 
+        priority: 'ปกติ', 
+        status: 'receive', 
+        date: '18 ม.ค. 2025 10.10', 
+        credit: 3,
+        location: 'ห้องเรียน 405',
+        details: 'อินเทอร์เน็ตหลุดบ่อยมาก นักเรียนไม่สามารถเข้าเว็บเรียนออนไลน์ได้',
+        images: ['jpg', 'jpg'] 
+    },
+    { 
+        id: 'CM9804', 
+        problem: 'คอมพิวเตอร์ตั้งโต๊ะไม่สามารถเปิดเครื่องได้', 
+        reporter: 'นาย กิตติพงษ์ แสงชัย', 
+        priority: 'ปกติ', 
+        status: 'receive', 
+        date: '19 ม.ค. 2025 12.00', 
+        credit: 3,
+        location: 'ห้องปฏิบัติการคอมพิวเตอร์ 1',
+        details: 'เครื่อง PC หมายเลข 12 กดปุ่มเปิดแล้วไม่มีไฟเข้า จอดำสนิท',
+        images: ['jpg'] 
+    },
+    { 
+        id: 'CM9805', 
+        problem: 'ชักโครกกดไม่ลง', 
+        reporter: 'นาย กิตติพงษ์ แสงชัย', 
+        priority: 'ปกติ', 
+        status: 'refused', 
+        date: '20 ม.ค. 2025 16.01', 
+        credit: 3,
+        location: 'ห้องน้ำชาย ชั้น 3',
+        details: 'ชักโครกห้องในสุด กดน้ำไม่ลง มีกลิ่นเหม็นรบกวน',
+        images: ['jpg', 'png'] 
+    },
+    // Added 6 more items for pagination testing (Total 11 items -> 3 pages)
+    { 
+        id: 'CM9806', 
+        problem: 'เครื่องปรับอากาศมีน้ำหยด', 
+        reporter: 'นางสาว สมหญิง ใจดี', 
+        priority: 'ปกติ', 
+        status: 'receive', 
+        date: '21 ม.ค. 2025 09.30', 
+        credit: 3,
+        location: 'ห้องเรียน 302',
+        details: 'แอร์มีน้ำหยดลงมาที่โต๊ะนักเรียน ทำให้พื้นเปียก',
+        images: ['jpg'] 
+    },
+    { 
+        id: 'CM9807', 
+        problem: 'โปรเจคเตอร์ภาพไม่ชัด', 
+        reporter: 'นาย สมชาย รักเรียน', 
+        priority: 'ปกติ', 
+        status: 'receive', 
+        date: '21 ม.ค. 2025 13.15', 
+        credit: 3,
+        location: 'ห้องประชุมเล็ก',
+        details: 'ภาพจากโปรเจคเตอร์เบลอมาก ปรับโฟกัสแล้วก็ไม่หาย',
+        images: [] 
+    },
+    { 
+        id: 'CM9808', 
+        problem: 'ประตูห้องน้ำปิดไม่ได้', 
+        reporter: 'นาย วิชัย ใจกล้า', 
+        priority: 'เร่งด่วน', 
+        status: 'receive', 
+        date: '22 ม.ค. 2025 08.45', 
+        credit: 3,
+        location: 'ห้องน้ำหญิง ชั้น 1',
+        details: 'กลอนประตูห้องน้ำห้องที่ 2 พัง ล็อกไม่ได้',
+        images: ['jpg'] 
+    },
+    { 
+        id: 'CM9809', 
+        problem: 'หลอดไฟกระพริบ', 
+        reporter: 'นางสาว สุดา แจ่มใส', 
+        priority: 'ปกติ', 
+        status: 'completed', 
+        date: '23 ม.ค. 2025 11.20', 
+        credit: 3,
+        location: 'ทางเดินหน้าห้องสมุด',
+        details: 'หลอดไฟนีออนกระพริบตลอดเวลา ทำให้ปวดตา',
+        images: [] 
+    },
+    { 
+        id: 'CM9810', 
+        problem: 'ปลั๊กไฟหลวม', 
+        reporter: 'นาย อนุชา พาเพลิน', 
+        priority: 'ปกติ', 
+        status: 'receive', 
+        date: '24 ม.ค. 2025 14.50', 
+        credit: 3,
+        location: 'ห้องพักครูหมวดวิทย์',
+        details: 'เต้ารับเสียบปลั๊กแล้วหลวม ไฟติดๆ ดับๆ',
+        images: ['jpg'] 
+    },
+    { 
+        id: 'CM9811', 
+        problem: 'เสียงดังจากพัดลมเพดาน', 
+        reporter: 'นาย ก้องเกียรติ เกรียงไกร', 
+        priority: 'ปกติ', 
+        status: 'receive', 
+        date: '25 ม.ค. 2025 10.00', 
+        credit: 3,
+        location: 'โรงอาหารเก่า',
+        details: 'พัดลมเพดานตัวกลางมีเสียงดังเอี๊ยดอ๊าดเวลาหมุน',
+        images: [] 
+    }
+];
