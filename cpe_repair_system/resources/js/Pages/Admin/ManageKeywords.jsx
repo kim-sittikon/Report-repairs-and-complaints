@@ -96,8 +96,8 @@ export default function ManageKeywords({ auth, keywords = [] }) {
                             <div className="w-1 h-8 bg-[#F59E0B] rounded-full"></div>
                             <h2 className="text-xl font-semibold text-gray-800">เพิ่มคีย์เวิร์ดใหม่</h2>
                         </div>
-                        <form onSubmit={handleSubmit} className="space-y-4">
-                            <div>
+                        <form onSubmit={handleSubmit} className="flex flex-col md:flex-row md:items-end gap-4">
+                            <div className="w-full md:w-1/3">
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     ประเภทกลุ่มงาน <span className="text-red-500">*</span>
                                 </label>
@@ -116,7 +116,7 @@ export default function ManageKeywords({ auth, keywords = [] }) {
                                 )}
                             </div>
 
-                            <div>
+                            <div className="flex-grow w-full">
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     คีย์เวิร์ด <span className="text-red-500">*</span>
                                 </label>
@@ -133,13 +133,15 @@ export default function ManageKeywords({ auth, keywords = [] }) {
                                 )}
                             </div>
 
-                            <button
-                                type="submit"
-                                disabled={form.processing}
-                                className="w-full px-6 py-3 bg-[#F59E0B] hover:bg-[#d97706] text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                {form.processing ? 'กำลังเพิ่ม...' : 'เพิ่มคีย์เวิร์ด'}
-                            </button>
+                            <div className="w-full md:w-auto">
+                                <button
+                                    type="submit"
+                                    disabled={form.processing}
+                                    className="w-full md:w-auto px-6 py-2.5 bg-[#F59E0B] hover:bg-[#d97706] text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                                >
+                                    {form.processing ? 'กำลังเพิ่ม...' : 'เพิ่มคีย์เวิร์ด'}
+                                </button>
+                            </div>
                         </form>
                     </div>
 

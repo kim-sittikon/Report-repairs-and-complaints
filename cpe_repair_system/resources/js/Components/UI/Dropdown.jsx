@@ -51,11 +51,16 @@ const Content = ({
         alignmentClasses = 'ltr:origin-top-right rtl:origin-top-left end-0';
     }
 
-    let widthClasses = '';
+    const widthMap = {
+        '48': 'w-48',
+        '56': 'w-56',
+        '64': 'w-64',
+        '80': 'w-80',
+        '96': 'w-96',
+        'auto': 'w-auto max-w-md', // specific for auto width
+    };
 
-    if (width === '48') {
-        widthClasses = 'w-48';
-    }
+    let widthClasses = widthMap[width.toString()] || 'w-48';
 
     return (
         <>

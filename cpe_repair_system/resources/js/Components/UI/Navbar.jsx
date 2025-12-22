@@ -78,13 +78,13 @@ export default function Navbar() {
                         <div className="relative group">
                             <Dropdown>
                                 <Dropdown.Trigger>
-                                    <NavDropdownTrigger label="แจ้งปัญหา (Report)" />
+                                    <NavDropdownTrigger label="แจ้งปัญหา" />
                                 </Dropdown.Trigger>
-                                <Dropdown.Content width="56">
-                                    <DropdownHeader>เมนูทั่วไป (General)</DropdownHeader>
-                                    <Dropdown.Link href="/dashboard">หน้าแรก (Home)</Dropdown.Link>
-                                    <Dropdown.Link href={route('report.create')}>ฟอร์มแจ้งปัญหา (Report Issue)</Dropdown.Link>
-                                    <Dropdown.Link href={route('report.history')}>ประวัติการแจ้ง (My History)</Dropdown.Link>
+                                <Dropdown.Content width="64">
+                                    <DropdownHeader>เมนูทั่วไป</DropdownHeader>
+                                    <Dropdown.Link href="/dashboard">หน้าแรก</Dropdown.Link>
+                                    <Dropdown.Link href={route('report.create')}>ฟอร์มแจ้งปัญหา</Dropdown.Link>
+                                    <Dropdown.Link href={route('report.history')}>ประวัติการแจ้ง</Dropdown.Link>
                                 </Dropdown.Content>
                             </Dropdown>
                         </div>
@@ -96,15 +96,15 @@ export default function Navbar() {
                                     <Dropdown.Trigger>
                                         <NavDropdownTrigger label="กลุ่มงานแจ้งซ่อม" />
                                     </Dropdown.Trigger>
-                                    <Dropdown.Content width="56">
-                                        <DropdownHeader>เมนูช่าง (Repair Menu)</DropdownHeader>
-                                        <Dropdown.Link href="/dashboard?view=repair">หน้าหลัก (Dashboard)</Dropdown.Link>
-                                        <Dropdown.Link href="/announcements/create">สร้างข่าวสาร (Create News)</Dropdown.Link>
+                                    <Dropdown.Content width="64">
+                                        <DropdownHeader>เมนูช่าง</DropdownHeader>
+                                        <Dropdown.Link href="/dashboard?view=repair">หน้าหลัก</Dropdown.Link>
+                                        <Dropdown.Link href="/announcements/create">สร้างข่าวสาร</Dropdown.Link>
                                         <div className="border-t border-gray-100 my-1"></div>
-                                        <Dropdown.Link href="/jobs/all">จ๊อบรวม (All Jobs)</Dropdown.Link>
-                                        <Dropdown.Link href="/jobs/my">จ๊อบของฉัน (My Jobs)</Dropdown.Link>
+                                        <Dropdown.Link href="/jobs/all">จ๊อบรวม</Dropdown.Link>
+                                        <Dropdown.Link href="/jobs/my">จ๊อบของฉัน</Dropdown.Link>
                                         <div className="border-t border-gray-100 my-1"></div>
-                                        <Dropdown.Link href="/keywords/repair">กำหนดคีย์เวิร์ด (Keywords)</Dropdown.Link>
+                                        <Dropdown.Link href="/keywords/repair">กำหนดคีย์เวิร์ด</Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>
@@ -117,12 +117,12 @@ export default function Navbar() {
                                     <Dropdown.Trigger>
                                         <NavDropdownTrigger label="กลุ่มงานร้องเรียน" />
                                     </Dropdown.Trigger>
-                                    <Dropdown.Content width="56">
-                                        <DropdownHeader>เมนูร้องเรียน (Complaint Menu)</DropdownHeader>
-                                        <Dropdown.Link href="/dashboard?view=complaint">หน้าหลัก (Dashboard)</Dropdown.Link>
-                                        <Dropdown.Link href="/complaints/list">รายการร้องเรียน (All Complaints)</Dropdown.Link>
+                                    <Dropdown.Content width="64">
+                                        <DropdownHeader>เมนูร้องเรียน</DropdownHeader>
+                                        <Dropdown.Link href="/dashboard?view=complaint">หน้าหลัก</Dropdown.Link>
+                                        <Dropdown.Link href="/complaints/list">รายการร้องเรียน</Dropdown.Link>
                                         <div className="border-t border-gray-100 my-1"></div>
-                                        <Dropdown.Link href="/keywords/complaint">กำหนดคีย์เวิร์ด (Keywords)</Dropdown.Link>
+                                        <Dropdown.Link href="/keywords/complaint">กำหนดคีย์เวิร์ด</Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>
@@ -135,15 +135,15 @@ export default function Navbar() {
                                     <Dropdown.Trigger>
                                         <NavDropdownTrigger label="ผู้ดูแลระบบ" />
                                     </Dropdown.Trigger>
-                                    <Dropdown.Content width="56">
-                                        <DropdownHeader>ผู้ดูแลระบบ (Admin Menu)</DropdownHeader>
-                                        <Dropdown.Link href="/admin">หน้าหลัก (Dashboard)</Dropdown.Link>
+                                    <Dropdown.Content width="64">
+                                        <DropdownHeader>ผู้ดูแลระบบ</DropdownHeader>
+                                        <Dropdown.Link href="/admin">หน้าหลัก</Dropdown.Link>
                                         <div className="border-t border-gray-100 my-1"></div>
-                                        <Dropdown.Link href="/admin/users">จัดการผู้ใช้งาน (Manage Users)</Dropdown.Link>
-                                        <Dropdown.Link href={route('admin.users.invite')}>สร้างผู้ใช้งาน (Create User)</Dropdown.Link>
+                                        <Dropdown.Link href="/admin/users">จัดการผู้ใช้งาน</Dropdown.Link>
+                                        <Dropdown.Link href={route('admin.users.invite')}>สร้างผู้ใช้งาน</Dropdown.Link>
                                         <div className="border-t border-gray-100 my-1"></div>
-                                        <Dropdown.Link href="/admin/locations">เพิ่มอาคาร/ห้อง (Manage Locations)</Dropdown.Link>
-                                        <Dropdown.Link href="/admin/keywords">จัดการคีย์เวิร์ด (Manage Keywords)</Dropdown.Link>
+                                        <Dropdown.Link href="/admin/locations">แเพิ่มอาคาร/ห้อง</Dropdown.Link>
+                                        <Dropdown.Link href="/admin/keywords">จัดการคีย์เวิร์ด</Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>
@@ -235,26 +235,26 @@ export default function Navbar() {
             {/* Mobile Menu */}
             <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' lg:hidden bg-[#F59E0B] border-t border-orange-600 shadow-xl'}>
                 <div className="pt-2 pb-3 space-y-1">
-                    <div className="px-4 py-2 text-xs font-bold text-orange-200 uppercase tracking-widest">General Menu</div>
+                    <div className="px-4 py-2 text-xs font-bold text-orange-200 uppercase tracking-widest">เมนูทั่วไป</div>
                     <ResponsiveNavLink href="/dashboard" className="text-white hover:bg-black/10 text-lg">หน้าแรก</ResponsiveNavLink>
                     <ResponsiveNavLink href={route('report.create')} className="text-white hover:bg-black/10 text-lg">ฟอร์มแจ้งปัญหา</ResponsiveNavLink>
 
                     {user.job_repair && (
                         <>
-                            <div className="px-4 py-2 text-xs font-bold text-orange-200 uppercase tracking-widest mt-4">Repair Menu</div>
+                            <div className="px-4 py-2 text-xs font-bold text-orange-200 uppercase tracking-widest mt-4">เมนูช่าง</div>
                             <ResponsiveNavLink href="/dashboard?view=repair" className="text-white pl-8 hover:bg-black/10">หน้าหลักแจ้งซ่อม</ResponsiveNavLink>
                             <ResponsiveNavLink href="/jobs/my" className="text-white pl-8 hover:bg-black/10">งานของฉัน</ResponsiveNavLink>
                         </>
                     )}
                     {user.job_complaint && (
                         <>
-                            <div className="px-4 py-2 text-xs font-bold text-orange-200 uppercase tracking-widest mt-4">Complaint Menu</div>
+                            <div className="px-4 py-2 text-xs font-bold text-orange-200 uppercase tracking-widest mt-4">เมนูร้องเรียน</div>
                             <ResponsiveNavLink href="/dashboard?view=complaint" className="text-white pl-8 hover:bg-black/10">หน้าหลักร้องเรียน</ResponsiveNavLink>
                         </>
                     )}
                     {user.job_admin && (
                         <>
-                            <div className="px-4 py-2 text-xs font-bold text-orange-200 uppercase tracking-widest mt-4">Admin Menu</div>
+                            <div className="px-4 py-2 text-xs font-bold text-orange-200 uppercase tracking-widest mt-4">เมนูผู้ดูแลระบบ</div>
                             <ResponsiveNavLink href="/dashboard?view=admin" className="text-white pl-8 hover:bg-black/10">ผู้ดูแลระบบ</ResponsiveNavLink>
                         </>
                     )}

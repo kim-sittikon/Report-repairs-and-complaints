@@ -51,6 +51,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
         Route::get('/users/invite', [AdminUserController::class, 'create'])->name('users.invite');
         Route::post('/users/invite', [AdminUserController::class, 'invite'])->name('users.invite.send');
+        Route::post('/users/bulk', [AdminUserController::class, 'bulkStore'])->name('users.bulk');
+        Route::post('/users/{id}/resend', [AdminUserController::class, 'resend'])->name('users.resend');
+        Route::delete('/users/{id}/cancel', [AdminUserController::class, 'cancel'])->name('users.cancel');
     });
 });
 

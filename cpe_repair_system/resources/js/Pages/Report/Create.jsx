@@ -17,6 +17,10 @@ export default function Create({ auth, buildings = [] }) {
 
     const [imagePreview, setImagePreview] = useState([]);
 
+    // Logic to find the selected building and its rooms
+    const selectedBuilding = buildings.find(b => String(b.building_id) === String(data.location_id));
+    const availableRooms = selectedBuilding ? selectedBuilding.rooms : [];
+
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
         setData('images', [...data.images, ...files]);
@@ -43,9 +47,6 @@ export default function Create({ auth, buildings = [] }) {
                     <h1 className="text-3xl md:text-4xl font-medium text-white tracking-wide leading-tight drop-shadow-md">
                         แบบฟอร์มแจ้งปัญหา ภาควิศวกรรมคอมพิวเตอร์
                     </h1>
-                    <h2 className="text-2xl md:text-3xl font-light text-white/90 tracking-wider mt-2 drop-shadow-md">
-                        Computer Engineering Issue Reporting System
-                    </h2>
                 </div>
             </div>
 
@@ -97,10 +98,13 @@ export default function Create({ auth, buildings = [] }) {
                                     <div className="space-y-2">
                                         <select
                                             value={data.location_id}
-                                            onChange={e => setData('location_id', e.target.value)}
+                                            onChange={e => {
+                                                const newLocationId = e.target.value;
+                                                setData(currentData => ({ ...currentData, location_id: newLocationId, room: '' }));
+                                            }}
                                             className="w-full rounded-md border-gray-300 shadow-sm focus:border-[#F59E0B] focus:ring-[#F59E0B] py-2.5 text-gray-600"
                                         >
-                                            <option value="">เลือกอาคาร (Select Building)</option>
+                                            <option value="">เลือกอาคาร</option>
                                             {buildings.map(building => (
                                                 <option key={building.building_id} value={building.building_id}>
                                                     {building.building_name}
@@ -110,13 +114,24 @@ export default function Create({ auth, buildings = [] }) {
                                         {errors.location_id && <div className="text-red-500 text-sm mt-1">{errors.location_id}</div>}
                                     </div>
                                     <div className="space-y-2">
-                                        <input
-                                            type="text"
+
+                                        <select
                                             value={data.room}
                                             onChange={e => setData('room', e.target.value)}
-                                            className="w-full rounded-md border-gray-300 shadow-sm focus:border-[#F59E0B] focus:ring-[#F59E0B] py-2.5"
-                                            placeholder="ระบุห้อง / สถานที่ย่อย (Specify Room)"
-                                        />
+                                            className="w-full rounded-md border-gray-300 shadow-sm focus:border-[#F59E0B] focus:ring-[#F59E0B] py-2.5 text-gray-600"
+                                            disabled={!data.location_id || availableRooms.length === 0}
+                                        >
+                                            <option value="">
+                                                {availableRooms.length === 0 && data.location_id
+                                                    ? 'ไม่มีข้อมูลห้องในอาคารนี้'
+                                                    : 'เลือกห้อง / สถานที่ย่อย'}
+                                            </option>
+                                            {availableRooms.map(room => (
+                                                <option key={room.room_id} value={room.room_name}>
+                                                    {room.room_name}
+                                                </option>
+                                            ))}
+                                        </select>
                                         {errors.room && <div className="text-red-500 text-sm mt-1">{errors.room}</div>}
                                     </div>
                                 </div>

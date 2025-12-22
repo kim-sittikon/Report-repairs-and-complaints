@@ -102,4 +102,21 @@ class Account extends Authenticatable
     {
         return $this->hasMany(RequestComplaint::class, 'account_id');
     }
+
+    // Scopes
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
+
+    public function scopePending($query)
+    {
+        return $query->where('status', 'pending');
+    }
+
+    // Helpers
+    public function isPending()
+    {
+        return $this->status === 'pending';
+    }
 }
