@@ -32,6 +32,11 @@ class NewPasswordController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
+    /**
+     * Handle an incoming new password request.
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
@@ -47,8 +52,8 @@ class NewPasswordController extends Controller
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user) use ($request) {
                 $user->forceFill([
-                    'password' => Hash::make($request->password),
-                    'remember_token' => Str::random(60),
+                    'password_hash' => Hash::make($request->password), // Use password_hash and Hash::make!
+                    'remember_token' => Str::random(60), // Refresh token
                 ])->save();
 
                 event(new PasswordReset($user));

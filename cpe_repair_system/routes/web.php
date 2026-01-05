@@ -21,9 +21,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/history', [App\Http\Controllers\ReportController::class, 'history'])->name('history');
     });
 
+    Route::prefix('repair')->name('repair.')->group(function () {
+        // ... other repair routes if any ...
+        Route::get('/keywords', [\App\Http\Controllers\PersonalKeywordController::class, 'indexRepair'])->name('keywords');
+    });
+
     Route::get('/job', function () {
         return Inertia::render('Job/Index'); // Stub
     })->name('job.index');
+
+    // Complaint Routes
+    Route::prefix('complaints')->name('complaints.')->group(function () {
+        Route::get('/dashboard', [App\Http\Controllers\ComplaintController::class, 'dashboard'])->name('dashboard');
+        Route::get('/list', [App\Http\Controllers\ComplaintController::class, 'index'])->name('index');
+        Route::get('/keywords', [\App\Http\Controllers\PersonalKeywordController::class, 'indexComplaint'])->name('keywords');
+    });
 
     Route::get('/admin', [App\Http\Controllers\AdminDashboardController::class, 'index'])->name('admin.index');
 
@@ -54,6 +66,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/users/bulk', [AdminUserController::class, 'bulkStore'])->name('users.bulk');
         Route::post('/users/{id}/resend', [AdminUserController::class, 'resend'])->name('users.resend');
         Route::delete('/users/{id}/cancel', [AdminUserController::class, 'cancel'])->name('users.cancel');
+    });
+    // Personal Keywords CRUD
+    Route::name('keywords.personal.')->group(function () {
+        Route::post('/keywords/personal', [\App\Http\Controllers\PersonalKeywordController::class, 'store'])->name('store');
+        Route::put('/keywords/personal/{id}', [\App\Http\Controllers\PersonalKeywordController::class, 'update'])->name('update');
+        Route::delete('/keywords/personal/{id}', [\App\Http\Controllers\PersonalKeywordController::class, 'destroy'])->name('destroy');
     });
 });
 

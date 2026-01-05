@@ -90,7 +90,7 @@ export default function Navbar() {
                         </div>
 
                         {/* 2. Repair Group (Conditional) */}
-                        {user.job_repair && (
+                        {user.job_repair && user.role !== 'student' && (
                             <div className="relative group">
                                 <Dropdown>
                                     <Dropdown.Trigger>
@@ -104,14 +104,14 @@ export default function Navbar() {
                                         <Dropdown.Link href="/jobs/all">จ๊อบรวม</Dropdown.Link>
                                         <Dropdown.Link href="/jobs/my">จ๊อบของฉัน</Dropdown.Link>
                                         <div className="border-t border-gray-100 my-1"></div>
-                                        <Dropdown.Link href="/keywords/repair">กำหนดคีย์เวิร์ด</Dropdown.Link>
+                                        <Dropdown.Link href={route('repair.keywords')}>กำหนดคีย์เวิร์ด</Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>
                         )}
 
                         {/* 3. Complaint Group (Conditional) */}
-                        {user.job_complaint && (
+                        {user.job_complaint && user.role !== 'student' && (
                             <div className="relative group">
                                 <Dropdown>
                                     <Dropdown.Trigger>
@@ -119,17 +119,17 @@ export default function Navbar() {
                                     </Dropdown.Trigger>
                                     <Dropdown.Content width="64">
                                         <DropdownHeader>เมนูร้องเรียน</DropdownHeader>
-                                        <Dropdown.Link href="/dashboard?view=complaint">หน้าหลัก</Dropdown.Link>
+                                        <Dropdown.Link href="/complaints/dashboard">หน้าหลัก</Dropdown.Link>
                                         <Dropdown.Link href="/complaints/list">รายการร้องเรียน</Dropdown.Link>
                                         <div className="border-t border-gray-100 my-1"></div>
-                                        <Dropdown.Link href="/keywords/complaint">กำหนดคีย์เวิร์ด</Dropdown.Link>
+                                        <Dropdown.Link href="/complaints/keywords">กำหนดคีย์เวิร์ด</Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>
                         )}
 
                         {/* 4. Admin Group (Conditional) */}
-                        {user.job_admin && (
+                        {user.job_admin && user.role !== 'student' && (
                             <div className="relative group">
                                 <Dropdown>
                                     <Dropdown.Trigger>

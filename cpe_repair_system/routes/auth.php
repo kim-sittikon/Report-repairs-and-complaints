@@ -17,6 +17,10 @@ Route::middleware('guest')->group(function () {
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
+    Route::post('send-otp', [RegisteredUserController::class, 'sendOtp'])
+        ->middleware('throttle:3,1')
+        ->name('send-otp');
+
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 

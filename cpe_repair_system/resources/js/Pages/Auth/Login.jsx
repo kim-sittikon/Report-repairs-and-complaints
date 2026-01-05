@@ -33,7 +33,7 @@ export default function Login({ status, canResetPassword }) {
                 </h1><br />
                 <div className="flex items-center gap-4 text-gray-400 text-sm">
                     <span className="flex-1 h-px bg-gray-200"></span>
-                    <span>OR</span>
+                    <span>หรือ</span>
                     <span className="flex-1 h-px bg-gray-200"></span>
                 </div>
             </div>
@@ -58,7 +58,7 @@ export default function Login({ status, canResetPassword }) {
                         <InputLabel htmlFor="password" value="รหัสผ่าน" className="text-gray-500" />
                         <button type="button" className="text-xs text-gray-400 flex items-center gap-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-eye-off"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" /><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" /><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" /><line x1="2" x2="22" y1="2" y2="22" /></svg>
-                            Hide
+                            ซ่อน
                         </button>
                     </div>
 
@@ -79,7 +79,7 @@ export default function Login({ status, canResetPassword }) {
                                 href={route('password.request')}
                                 className="underline text-sm text-gray-400 hover:text-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
-                                Forget your password
+                                ลืมรหัสผ่าน?
                             </Link>
                         )}
                     </div>
@@ -89,13 +89,13 @@ export default function Login({ status, canResetPassword }) {
                 <div className="flex flex-col gap-4 pt-4">
                     <PrimaryButton className="w-full justify-center bg-gray-400 hover:bg-gray-500 text-white py-3 rounded-full text-lg normal-case font-normal" disabled={processing}>
                         <span className="flex items-center gap-2">
-                            Sign in
+                            เข้าสู่ระบบ
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
                         </span>
                     </PrimaryButton>
 
                     <div className="text-center text-sm text-gray-500">
-                        Don't have an acount? <Link href={route('register')} className="text-gray-900 font-bold underline">Sign up</Link>
+                        ยังไม่มีบัญชีใช่หรือไม่? <Link href={route('register')} className="text-gray-900 font-bold underline">ลงทะเบียน</Link>
                     </div>
                 </div>
             </form>

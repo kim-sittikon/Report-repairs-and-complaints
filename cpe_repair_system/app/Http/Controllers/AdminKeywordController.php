@@ -31,11 +31,13 @@ class AdminKeywordController extends Controller
     {
         $validated = $request->validate([
             'type' => 'required|in:repair,complaint',
+            'scope' => 'required|in:global,personal',
             'keyword' => 'required|string|max:255',
         ]);
 
-        // Check for duplicate
-        $exists = Keyword::where('type', $validated['type'])
+        // Check for duplicate (including soft deleted)
+        $exists = Keyword::withTrashed()
+            ->where('type', $validated['type'])
             ->where('keyword', $validated['keyword'])
             ->exists();
 
@@ -47,6 +49,10 @@ class AdminKeywordController extends Controller
         $validated['creator_id'] = auth()->user()->account_id;
 
         Keyword::create($validated);
+
+        // Cache Invalidation
+        \Illuminate\Support\Facades\Cache::forget("keywords_global_{$validated['type']}");
+        \Illuminate\Support\Facades\Cache::forget("keywords_personal_{$validated['type']}");
 
         return back()->with('success', 'เพิ่มคีย์เวิร์ดสำเร็จ');
     }
@@ -60,11 +66,13 @@ class AdminKeywordController extends Controller
 
         $validated = $request->validate([
             'type' => 'required|in:repair,complaint',
+            'scope' => 'required|in:global,personal',
             'keyword' => 'required|string|max:255',
         ]);
 
-        // Check for duplicate (excluding current keyword)
-        $exists = Keyword::where('type', $validated['type'])
+        // Check for duplicate (excluding current keyword, including soft deleted)
+        $exists = Keyword::withTrashed()
+            ->where('type', $validated['type'])
             ->where('keyword', $validated['keyword'])
             ->where('id', '!=', $id)
             ->exists();
@@ -77,6 +85,10 @@ class AdminKeywordController extends Controller
         $validated['editor_id'] = auth()->user()->account_id;
 
         $keyword->update($validated);
+
+        // Cache Invalidation
+        \Illuminate\Support\Facades\Cache::forget("keywords_global_{$validated['type']}");
+        \Illuminate\Support\Facades\Cache::forget("keywords_personal_{$validated['type']}");
 
         return back()->with('success', 'แก้ไขคีย์เวิร์ดสำเร็จ');
     }
@@ -94,6 +106,10 @@ class AdminKeywordController extends Controller
 
         // Soft delete
         $keyword->delete();
+
+        // Cache Invalidation
+        \Illuminate\Support\Facades\Cache::forget("keywords_global_{$keyword->type}");
+        \Illuminate\Support\Facades\Cache::forget("keywords_personal_{$keyword->type}");
 
         return back()->with('success', 'ลบคีย์เวิร์ดสำเร็จ');
     }

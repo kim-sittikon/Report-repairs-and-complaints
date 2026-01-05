@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react';
 
 export default function LandingPage() {
+
     return (
         <div className="bg-gray-50 min-h-screen font-sans">
             {/* 1. Hero Section */}
@@ -56,6 +57,8 @@ export default function LandingPage() {
             {/* 2. Content Section */}
             <div className="max-w-7xl mx-auto px-6 lg:px-10 py-12 space-y-12">
 
+
+
                 {/* Header */}
                 <div className="text-center space-y-2">
                     <h3 className="text-3xl font-bold text-gray-800 tracking-tight">ข่าวสารประชาสัมพันธ์</h3>
@@ -108,7 +111,7 @@ export default function LandingPage() {
                                         img: "/images/urgent-news-server.png"
                                     }
                                 ].map((item) => (
-                                    <div key={`${setIndex}-${item.id}`} className="w-[300px] md:w-[320px] bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden group border border-gray-100 flex-shrink-0">
+                                    <div key={`${setIndex} -${item.id} `} className="w-[300px] md:w-[320px] bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden group border border-gray-100 flex-shrink-0">
                                         <div className="h-44 overflow-hidden relative">
                                             <img src={item.img} alt="News" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                             <div className="absolute top-2 right-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm uppercase tracking-wider">Urgent</div>
@@ -213,7 +216,7 @@ export default function LandingPage() {
                             {[1, 2, 3, 4, 5].map((page) => (
                                 <button
                                     key={page}
-                                    className={`h-8 w-8 flex items-center justify-center rounded-full text-sm font-semibold transition-colors ${page === 1 ? 'bg-[#F59E0B] text-white shadow-md' : 'text-gray-600 hover:bg-gray-100'}`}
+                                    className={`h - 8 w - 8 flex items - center justify - center rounded - full text - sm font - semibold transition - colors ${page === 1 ? 'bg-[#F59E0B] text-white shadow-md' : 'text-gray-600 hover:bg-gray-100'} `}
                                 >
                                     {page}
                                 </button>

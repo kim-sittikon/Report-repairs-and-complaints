@@ -91,52 +91,58 @@ export default function Create({ auth, buildings = [] }) {
 
 
                         {/* Location - Only show for Repair */}
-                        {data.type === 'repair' && (
-                            <div className="space-y-4 transition-all duration-300 ease-in-out">
-                                <label className="text-xl font-medium text-gray-800">สถานที่</label>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pl-0 md:pl-0">
-                                    <div className="space-y-2">
-                                        <select
-                                            value={data.location_id}
-                                            onChange={e => {
-                                                const newLocationId = e.target.value;
-                                                setData(currentData => ({ ...currentData, location_id: newLocationId, room: '' }));
-                                            }}
-                                            className="w-full rounded-md border-gray-300 shadow-sm focus:border-[#F59E0B] focus:ring-[#F59E0B] py-2.5 text-gray-600"
-                                        >
-                                            <option value="">เลือกอาคาร</option>
-                                            {buildings.map(building => (
-                                                <option key={building.building_id} value={building.building_id}>
-                                                    {building.building_name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        {errors.location_id && <div className="text-red-500 text-sm mt-1">{errors.location_id}</div>}
-                                    </div>
-                                    <div className="space-y-2">
-
-                                        <select
-                                            value={data.room}
-                                            onChange={e => setData('room', e.target.value)}
-                                            className="w-full rounded-md border-gray-300 shadow-sm focus:border-[#F59E0B] focus:ring-[#F59E0B] py-2.5 text-gray-600"
-                                            disabled={!data.location_id || availableRooms.length === 0}
-                                        >
-                                            <option value="">
-                                                {availableRooms.length === 0 && data.location_id
-                                                    ? 'ไม่มีข้อมูลห้องในอาคารนี้'
-                                                    : 'เลือกห้อง / สถานที่ย่อย'}
+                        {/* Location - Show for both but Required only for Repair */}
+                        <div className="space-y-4 transition-all duration-300 ease-in-out">
+                            <label className="text-xl font-medium text-gray-800">
+                                สถานที่ {data.type === 'repair' && <span className="text-red-500 text-base">* (จำเป็นต้องระบุ)</span>}
+                                {data.type === 'complaint' && <span className="text-gray-400 text-base font-normal ml-2">(ไม่บังคับ)</span>}
+                            </label>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pl-0 md:pl-0">
+                                <div className="space-y-2">
+                                    <select
+                                        value={data.location_id}
+                                        onChange={e => {
+                                            const newLocationId = e.target.value;
+                                            setData(currentData => ({ ...currentData, location_id: newLocationId, room: '' }));
+                                        }}
+                                        className={`w-full rounded-md border-gray-300 shadow-sm focus:border-[#F59E0B] focus:ring-[#F59E0B] py-2.5 text-gray-600 ${errors.location_id ? 'border-red-500' : ''}`}
+                                    >
+                                        <option value="">เลือกอาคาร</option>
+                                        {buildings.map(building => (
+                                            <option key={building.building_id} value={building.building_id}>
+                                                {building.building_name}
                                             </option>
-                                            {availableRooms.map(room => (
-                                                <option key={room.room_id} value={room.room_name}>
-                                                    {room.room_name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        {errors.room && <div className="text-red-500 text-sm mt-1">{errors.room}</div>}
-                                    </div>
+                                        ))}
+                                    </select>
+                                    {errors.location_id && <div className="text-red-500 text-sm mt-1">{errors.location_id}</div>}
+                                </div>
+                                <div className="space-y-2">
+
+                                    <select
+                                        value={data.room}
+                                        onChange={e => setData('room', e.target.value)}
+                                        className="w-full rounded-md border-gray-300 shadow-sm focus:border-[#F59E0B] focus:ring-[#F59E0B] py-2.5 text-gray-600"
+                                    >
+                                        <option value="">เลือกห้อง {data.room_id ? '' : '(ถ้ามี)'}</option>
+
+                                        {!data.location_id && (
+                                            <option disabled>กรุณาเลือกอาคารก่อน</option>
+                                        )}
+
+                                        {data.location_id && availableRooms.length === 0 && (
+                                            <option disabled>ไม่มีข้อมูลห้องในอาคารนี้</option>
+                                        )}
+
+                                        {availableRooms.map(room => (
+                                            <option key={room.room_id} value={room.room_name}>
+                                                {room.room_name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {errors.room && <div className="text-red-500 text-sm mt-1">{errors.room}</div>}
                                 </div>
                             </div>
-                        )}
+                        </div>
 
                         {/* Title */}
                         <div className="space-y-2">

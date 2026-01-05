@@ -12,6 +12,7 @@ class Keyword extends Model
 
     protected $fillable = [
         'type',
+        'scope', // 'global' or 'personal'
         'keyword',
         'creator_id',
         'editor_id',

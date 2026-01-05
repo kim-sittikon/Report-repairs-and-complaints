@@ -10,11 +10,13 @@ export default function ManageKeywords({ auth, keywords = [] }) {
 
     const form = useForm({
         type: '',
+        scope: 'global', // Admin always adds Global
         keyword: '',
     });
 
     const editForm = useForm({
         type: '',
+        scope: '',
         keyword: '',
     });
 
@@ -32,6 +34,7 @@ export default function ManageKeywords({ auth, keywords = [] }) {
         setEditingKeyword(keyword);
         editForm.setData({
             type: keyword.type,
+            scope: keyword.scope || 'personal', // Handle legacy data
             keyword: keyword.keyword,
         });
     };
@@ -116,6 +119,8 @@ export default function ManageKeywords({ auth, keywords = [] }) {
                                 )}
                             </div>
 
+
+
                             <div className="flex-grow w-full">
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     คีย์เวิร์ด <span className="text-red-500">*</span>
@@ -196,6 +201,7 @@ export default function ManageKeywords({ auth, keywords = [] }) {
                                     <tr>
                                         <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 w-20">ลำดับ</th>
                                         <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">คีย์เวิร์ด</th>
+                                        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 w-32">ขอบเขต</th>
                                         <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 w-48">ประเภทกลุ่มงาน</th>
                                         <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-48">การจัดการ</th>
                                     </tr>
@@ -209,6 +215,16 @@ export default function ManageKeywords({ auth, keywords = [] }) {
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <span className="text-gray-800 font-medium">{keyword.keyword}</span>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <span
+                                                        className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${keyword.scope === 'global'
+                                                            ? 'bg-purple-100 text-purple-700'
+                                                            : 'bg-gray-100 text-gray-600'
+                                                            }`}
+                                                    >
+                                                        {keyword.scope === 'global' ? '🌐 Global' : '👤 Personal'}
+                                                    </span>
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <span
@@ -257,120 +273,139 @@ export default function ManageKeywords({ auth, keywords = [] }) {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
 
             {/* Edit Modal */}
-            {editingKeyword && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden">
-                        <div className="bg-gradient-to-r from-[#F59E0B] to-[#d97706] px-6 py-4">
-                            <h3 className="text-xl font-semibold text-white">แก้ไขคีย์เวิร์ด</h3>
+            {
+                editingKeyword && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                        <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden">
+                            <div className="bg-gradient-to-r from-[#F59E0B] to-[#d97706] px-6 py-4">
+                                <h3 className="text-xl font-semibold text-white">แก้ไขคีย์เวิร์ด</h3>
+                            </div>
+                            <form onSubmit={handleUpdate} className="p-6 space-y-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        ประเภทกลุ่มงาน
+                                    </label>
+                                    <select
+                                        value={editForm.data.type}
+                                        onChange={(e) => editForm.setData('type', e.target.value)}
+                                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F59E0B] focus:border-transparent"
+                                        required
+                                    >
+                                        <option value="repair">กลุ่มงานแจ้งซ่อม (Repair)</option>
+                                        <option value="complaint">กลุ่มงานร้องเรียน (Complaint)</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        ขอบเขต (Scope)
+                                    </label>
+                                    <select
+                                        value={editForm.data.scope}
+                                        onChange={(e) => editForm.setData('scope', e.target.value)}
+                                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F59E0B] focus:border-transparent"
+                                        required
+                                    >
+                                        <option value="personal">ส่วนตัว (Personal)</option>
+                                        <option value="global">ส่วนกลาง (Global)</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        คีย์เวิร์ด
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={editForm.data.keyword}
+                                        onChange={(e) => editForm.setData('keyword', e.target.value)}
+                                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F59E0B] focus:border-transparent"
+                                        required
+                                    />
+                                </div>
+
+                                <div className="flex gap-3 pt-4">
+                                    <button
+                                        type="button"
+                                        onClick={() => setEditingKeyword(null)}
+                                        className="flex-1 px-4 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition-colors font-medium"
+                                    >
+                                        ยกเลิก
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={editForm.processing}
+                                        className="flex-1 px-4 py-2.5 bg-[#F59E0B] hover:bg-[#d97706] text-white rounded-lg transition-colors font-medium disabled:opacity-50"
+                                    >
+                                        {editForm.processing ? 'กำลังบันทึก...' : 'บันทึกการแก้ไข'}
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                        <form onSubmit={handleUpdate} className="p-6 space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    ประเภทกลุ่มงาน
-                                </label>
-                                <select
-                                    value={editForm.data.type}
-                                    onChange={(e) => editForm.setData('type', e.target.value)}
-                                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F59E0B] focus:border-transparent"
-                                    required
-                                >
-                                    <option value="repair">กลุ่มงานแจ้งซ่อม (Repair)</option>
-                                    <option value="complaint">กลุ่มงานร้องเรียน (Complaint)</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    คีย์เวิร์ด
-                                </label>
-                                <input
-                                    type="text"
-                                    value={editForm.data.keyword}
-                                    onChange={(e) => editForm.setData('keyword', e.target.value)}
-                                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F59E0B] focus:border-transparent"
-                                    required
-                                />
-                            </div>
-
-                            <div className="flex gap-3 pt-4">
-                                <button
-                                    type="button"
-                                    onClick={() => setEditingKeyword(null)}
-                                    className="flex-1 px-4 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition-colors font-medium"
-                                >
-                                    ยกเลิก
-                                </button>
-                                <button
-                                    type="submit"
-                                    disabled={editForm.processing}
-                                    className="flex-1 px-4 py-2.5 bg-[#F59E0B] hover:bg-[#d97706] text-white rounded-lg transition-colors font-medium disabled:opacity-50"
-                                >
-                                    {editForm.processing ? 'กำลังบันทึก...' : 'บันทึกการแก้ไข'}
-                                </button>
-                            </div>
-                        </form>
                     </div>
-                </div>
-            )}
+                )
+            }
 
             {/* Delete Confirmation Modal */}
-            {deletingKeyword && (
-                <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
-                        {/* Header with Icon */}
-                        <div className="bg-gradient-to-br from-red-50 to-red-100 p-8 text-center border-b-4 border-red-500">
-                            <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-red-500 mb-4 shadow-lg">
-                                <svg className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                </svg>
-                            </div>
-                            <h3 className="text-2xl font-bold text-gray-900">
-                                คุณแน่ใจหรือไม่ว่าต้องการลบคีย์เวิร์ดนี้?
-                            </h3>
-                        </div>
-
-                        {/* Content */}
-                        <div className="p-6 bg-white">
-                            <div className="bg-gray-50 rounded-lg p-4 mb-6 border border-gray-200">
-                                <p className="text-sm text-gray-600 mb-2">
-                                    <span className="font-medium">คีย์เวิร์ด:</span>
-                                </p>
-                                <p className="text-lg font-bold text-gray-900 mb-3">
-                                    {deletingKeyword.keyword}
-                                </p>
-                                <p className="text-sm text-gray-600">
-                                    <span className="font-medium">ประเภท:</span>{' '}
-                                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold ${deletingKeyword.type === 'repair'
-                                        ? 'bg-blue-100 text-blue-700'
-                                        : 'bg-green-100 text-green-700'
-                                        }`}>
-                                        {deletingKeyword.type === 'repair' ? '🔧 แจ้งซ่อม' : '📢 ร้องเรียน'}
-                                    </span>
-                                </p>
+            {
+                deletingKeyword && (
+                    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
+                        <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
+                            {/* Header with Icon */}
+                            <div className="bg-gradient-to-br from-red-50 to-red-100 p-8 text-center border-b-4 border-red-500">
+                                <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-red-500 mb-4 shadow-lg">
+                                    <svg className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                </div>
+                                <h3 className="text-2xl font-bold text-gray-900">
+                                    คุณแน่ใจหรือไม่ว่าต้องการลบคีย์เวิร์ดนี้?
+                                </h3>
                             </div>
 
-                            {/* Buttons */}
-                            <div className="flex gap-3">
-                                <button
-                                    onClick={confirmDelete}
-                                    className="flex-1 px-6 py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl transform hover:scale-105 text-lg"
-                                >
-                                    ✓ ยืนยันลบ
-                                </button>
-                                <button
-                                    onClick={() => setDeletingKeyword(null)}
-                                    className="flex-1 px-6 py-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold rounded-xl transition-all shadow-md hover:shadow-lg transform hover:scale-105 text-lg"
-                                >
-                                    ✕ ยกเลิก
-                                </button>
+                            {/* Content */}
+                            <div className="p-6 bg-white">
+                                <div className="bg-gray-50 rounded-lg p-4 mb-6 border border-gray-200">
+                                    <p className="text-sm text-gray-600 mb-2">
+                                        <span className="font-medium">คีย์เวิร์ด:</span>
+                                    </p>
+                                    <p className="text-lg font-bold text-gray-900 mb-3">
+                                        {deletingKeyword.keyword}
+                                    </p>
+                                    <p className="text-sm text-gray-600">
+                                        <span className="font-medium">ประเภท:</span>{' '}
+                                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold ${deletingKeyword.type === 'repair'
+                                            ? 'bg-blue-100 text-blue-700'
+                                            : 'bg-green-100 text-green-700'
+                                            }`}>
+                                            {deletingKeyword.type === 'repair' ? '🔧 แจ้งซ่อม' : '📢 ร้องเรียน'}
+                                        </span>
+                                    </p>
+                                </div>
+
+                                {/* Buttons */}
+                                <div className="flex gap-3">
+                                    <button
+                                        onClick={confirmDelete}
+                                        className="flex-1 px-6 py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl transform hover:scale-105 text-lg"
+                                    >
+                                        ✓ ยืนยันลบ
+                                    </button>
+                                    <button
+                                        onClick={() => setDeletingKeyword(null)}
+                                        className="flex-1 px-6 py-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold rounded-xl transition-all shadow-md hover:shadow-lg transform hover:scale-105 text-lg"
+                                    >
+                                        ✕ ยกเลิก
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            )}
-        </AuthenticatedLayout>
+                )
+            }
+        </AuthenticatedLayout >
     );
 }

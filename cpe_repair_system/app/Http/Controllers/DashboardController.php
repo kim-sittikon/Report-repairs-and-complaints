@@ -73,11 +73,51 @@ class DashboardController extends Controller
                 });
         }
 
+        // 5. Fetch Warnings (Keyword Matches)
+        $warnings = collect();
+        $user = auth()->user();
+
+        if ($user) {
+            // 1. If Admin/Staff -> See Global Warnings for their group
+            if ($user->job_admin || $user->job_repair || $user->job_complaint) {
+                $query = \App\Models\KeywordMatch::where('scope', 'global');
+
+                // Fetch Request data based on type
+                // Note: 'request' accessor we added in model might be heavy if not eager loaded properly, 
+                // but since it's polymorphic-ish via 'request_id', standard 'with' won't work easily unless we separate relations.
+                // We'll trust the model accessor for small volume (limit 5).
+                // Or better, eager load both: with(['repair', 'complaint'])
+                $query->with(['repair', 'complaint']);
+
+                // Filter by type if not Super Admin
+                if (!$user->job_admin) {
+                    if ($user->job_repair)
+                        $query->where('request_type', 'repair');
+                    if ($user->job_complaint)
+                        $query->where('request_type', 'complaint');
+                }
+
+                $globalWarnings = $query->latest()->take(5)->get();
+                $warnings = $warnings->concat($globalWarnings);
+            }
+
+            // 2. Personal Warnings (Always see own)
+            $personalWarnings = \App\Models\KeywordMatch::where('scope', 'personal')
+                ->where('owner_id', $user->account_id)
+                ->with(['repair', 'complaint'])
+                ->latest()
+                ->take(5)
+                ->get();
+
+            $warnings = $warnings->concat($personalWarnings)->sortByDesc('created_at')->values();
+        }
+
         return Inertia::render('Dashboard', [
             'urgent_news' => $urgentNews,
             'general_news' => $generalNews,
             'adminStats' => $adminStats,
             'recentActivity' => $recentActivity,
+            'warnings' => $warnings // Pass warnings to frontend
         ]);
     }
 }

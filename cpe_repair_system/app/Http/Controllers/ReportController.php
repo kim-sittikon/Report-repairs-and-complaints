@@ -8,10 +8,41 @@ use Inertia\Inertia;
 
 class ReportController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // For now, redirect to create or show list
-        return Inertia::render('Report/Index');
+        $user = auth()->user();
+
+        // Fetch Warnings (Keyword Matches)
+        $warnings = collect();
+
+        // 1. If Admin/Staff -> See Global Warnings for their group
+        if ($user->job_admin || $user->job_repair || $user->job_complaint) {
+            $query = \App\Models\KeywordMatch::where('scope', 'global')->with('request'); // Assuming relation
+
+            // Filter by type if not Super Admin (logic can be refined)
+            if (!$user->job_admin) {
+                if ($user->job_repair)
+                    $query->where('request_type', 'repair');
+                if ($user->job_complaint)
+                    $query->where('request_type', 'complaint');
+            }
+
+            $globalWarnings = $query->latest()->take(5)->get();
+            $warnings = $warnings->concat($globalWarnings);
+        }
+
+        // 2. Personal Warnings (Always see own)
+        $personalWarnings = \App\Models\KeywordMatch::where('scope', 'personal')
+            ->where('owner_id', $user->account_id)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $warnings = $warnings->concat($personalWarnings)->sortByDesc('created_at')->values();
+
+        return Inertia::render('Report/Index', [
+            'warnings' => $warnings
+        ]); // Redirecting to Index as per original code, but passing data
     }
 
     public function create()
@@ -29,7 +60,7 @@ class ReportController extends Controller
             'type' => 'required|in:repair,complaint',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'location_id' => 'nullable|exists:building,building_id',
+            'location_id' => 'required_if:type,repair|nullable|exists:building,building_id',
             'room' => 'nullable|string|max:255',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
@@ -77,6 +108,11 @@ class ReportController extends Controller
             ]);
             $message = 'Complaint submitted successfully.';
         }
+
+        // --- KEYWORD DETECTION (ASYNC QUEUE) ---
+        // Dispatch Job to process keywords in background
+        // Use afterCommit() to ensure DB record exists before Worker picks it up
+        \App\Jobs\ProcessKeywordDetection::dispatch($requestModel, $request->type)->afterCommit();
 
         // 3. Handle File Uploads
         if ($request->hasFile('images')) {

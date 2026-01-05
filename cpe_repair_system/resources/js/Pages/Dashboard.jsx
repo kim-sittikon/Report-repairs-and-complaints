@@ -17,7 +17,7 @@ const DashboardContent = ({ view, user, urgentNews, generalNews, adminStats, rec
 };
 
 export default function Dashboard() {
-    const { auth, urgent_news, general_news, adminStats, recentActivity } = usePage().props;
+    const { auth, urgent_news, general_news, adminStats, recentActivity, warnings } = usePage().props;
     const user = auth.user;
 
     // Get URL query params
@@ -44,6 +44,7 @@ export default function Dashboard() {
                                 generalNews={general_news}
                                 adminStats={adminStats}
                                 recentActivity={recentActivity}
+                                warnings={warnings}
                             />
                         </div>
                     </div>
